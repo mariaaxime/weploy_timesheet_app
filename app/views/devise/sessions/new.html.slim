@@ -1,0 +1,20 @@
+h2.title Log in
+.columns
+  .column.is-half
+    = render "devise/shared/error_messages", resource: resource
+    .card.card-content
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        .field
+          = f.label :email
+          .control = f.email_field :email, autofocus: true, autocomplete: "email", class: 'input'
+        .field
+          = f.label :password
+          .control = f.password_field :password, autocomplete: "current-password", class: 'input'
+        - if devise_mapping.rememberable?
+          .field
+            = f.label :remember_me, class: 'checkbox' do
+              = f.check_box :remember_me
+              | &nbsp;Remember me
+        .actions
+          = f.submit "Log in", class: 'button is-primary'
+= render "devise/shared/links"

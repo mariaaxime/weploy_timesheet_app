@@ -1,4 +1,6 @@
 class TimesheetsController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     @timesheets = Timesheet.all.page(params[:page])
   end
