@@ -65,3 +65,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "bulma-rails", "~> 0.7.5"
 gem "slim-rails"
+gem 'kaminari'
