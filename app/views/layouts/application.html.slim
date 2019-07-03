@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title Timesheets App
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+
+  body
+    div[style='margin: 1rem']
+      - flash.each do |name, message|
+        div[class="notification is-#{name}"]
+          button.delete
+          = message
+      = yield
