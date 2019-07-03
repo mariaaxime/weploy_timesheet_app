@@ -10,6 +10,13 @@ class TimesheetsController < ApplicationController
   def create
     @timesheet = Timesheet.new(timesheet_params)
 
+    if @timesheet.save
+      flash[:success] = 'Timesheet entry created successfully'
+      redirect_to root_path
+    else
+      flash[:danger] = 'The timesheet entry could not be created'
+      render 'new'
+    end
   end
 
   private

@@ -2,15 +2,16 @@
   h1.title Create timesheet entry
   .columns
     .column.is-half
+      = render 'layouts/error_messages', object: @timesheet
       .card.card-content
         = form_for(@timesheet) do |f|
           .field
             = f.label :date
-            .control = f.date_select :date, end_year: Date.today.year
+            .control = f.date_select :date, end_year: Date.today.year, include_blank: true
           .field
             = f.label :start_time
-            .control = f.time_select :start_time
+            .control = f.time_select :start_time, include_blank: true
           .field
             = f.label :finish_time
-            .control = f.time_select :finish_time
+            .control = f.time_select :finish_time, include_blank: true
           .control = f.submit 'Create', class: 'button is-primary'
