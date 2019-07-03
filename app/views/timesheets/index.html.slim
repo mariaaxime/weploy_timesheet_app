@@ -1,0 +1,9 @@
+.container
+  = link_to 'Create timesheet entry', new_timesheet_path, class: 'button is-primary is-pulled-right'
+  h1.title Timesheet entries
+  - if @timesheets.blank?
+    p There's no timesheets. Create the first one!
+  - else
+    ul
+      - @timesheets.each do |timesheet|
+        li #{timesheet.date}: #{timesheet.start_time} - #{timesheet.finish_time} #{number_to_currency(timesheet.value)}
