@@ -3,5 +3,5 @@
     .message-header The form contains #{pluralize(object.errors.count, 'error')}
     .message-body
       ul
-        - object.errors.each do |message|
+        - object.errors.full_messages.each do |message|
           li = message
