@@ -2,7 +2,7 @@ class TimesheetsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @timesheets = Timesheet.user_id_is(current_user.id).page(params[:page])
+    @timesheets = current_user.timesheets.page(params[:page])
   end
 
   def new
