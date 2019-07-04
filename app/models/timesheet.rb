@@ -1,4 +1,6 @@
 class Timesheet < ApplicationRecord
+  belongs_to :user
+
   validates_presence_of :date, :start_time, :finish_time
   validate :can_not_overlap_other_entries
   validate :date_can_not_be_in_the_future
@@ -6,23 +8,43 @@ class Timesheet < ApplicationRecord
 
   before_create :set_value
 
-  scope :user_id_is, -> (id) { where(user_id: id) }
-
   def friendly_format
     "#{date}: #{start_time.strftime('%H:%M')} - #{finish_time.strftime('%H:%M')} $#{value.round(2)}"
   end
 
+  VALUE_PER_HOUR = {
+    [1, 3, 5] => [
+      [{start_hour: 7, start_minute: 0, finish_hour: 14, finish_minute: 0, value: 22},
+       {start_hour: 14, start_minute: 0, finish_hour: 19, finish_minute: 0, value: 22}],
+      33
+     ],
+    [2, 4] => [
+      [{start_hour: 5, start_minute: 0, finish_hour: 17, finish_minute: 0, value: 25}],
+      35
+     ],
+    [6, 0] => [
+      [],
+      47
+     ],
+  }
+
   private
 
   def set_value
-    if [1, 3, 5].include?(date.wday)
-      duration_in_range = [finish_time, finish_time.change(hour: 19, min: 0)].min - [start_time, start_time.change(hour: 7, min: 0)].max
-      self.value = (duration_in_range / 3600.0 * 22) + ((finish_time - start_time - duration_in_range) / 3600.0 * 33)
-    elsif [2, 4].include?(date.wday)
-      duration_in_range = [finish_time, finish_time.change(hour: 17, min: 0)].min - [start_time, start_time.change(hour: 5, min: 0)].max
-      self.value = (duration_in_range / 3600.0 * 25) + ((finish_time - start_time - duration_in_range) / 3600.0 * 35)
-    elsif [6, 0].include?(date.wday)
-      self.value = (finish_time - start_time) / 3600.0 * 47
+    VALUE_PER_HOUR.each do |wday_array, (ranges, outside_value)|
+      if wday_array.include?(date.wday)
+        duration_in_ranges = 0
+        total_value = 0
+        ranges.each do |range|
+          range_start_time = [start_time, start_time.change(hour: range[:start_hour], min: range[:start_minute])].max
+          range_finish_time = [finish_time, finish_time.change(hour: range[:finish_hour], min: range[:finish_minute])].min
+          duration_in_range = range_finish_time - range_start_time
+          total_value += duration_in_range / 3600.0 * range[:value]
+          duration_in_ranges += duration_in_range
+        end
+        total_value += (finish_time - start_time - duration_in_ranges) / 3600.0 * outside_value
+        self.value = total_value
+      end
     end
   end
 
