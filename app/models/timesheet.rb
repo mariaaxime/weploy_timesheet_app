@@ -30,8 +30,7 @@ class Timesheet < ApplicationRecord
   end
 
   def can_not_overlap_other_entries
-    if (self.class.where("(start_time between :start_time and :finish_time) or finish_time between :start_time and :finish_time", start_time: start_time, finish_time: finish_time).present? ||
-        self.class.where("start_time <= ? and finish_time >= ?", start_time, finish_time).present?)
+    if self.class.where("date = ? and (start_time, finish_time) OVERLAPS (TIME ?, TIME ?)", date, start_time, finish_time).present?
       errors.add(:base, 'This entry is overlapping another one')
     end
   end
