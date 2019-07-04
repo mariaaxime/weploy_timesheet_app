@@ -5,6 +5,7 @@ class Timesheet < ApplicationRecord
   validate :can_not_overlap_other_entries
   validate :date_can_not_be_in_the_future
   validate :finish_time_can_not_be_before_start_time
+  validate :finish_time_can_not_be_equal_to_start_time
 
   before_create :set_value
 
@@ -49,11 +50,15 @@ class Timesheet < ApplicationRecord
   end
 
   def date_can_not_be_in_the_future
-    errors.add(:date, 'can not be in the future') if date > Date.today
+    errors.add(:date, 'can not be in the future') if date.present? && date > Date.today
   end
 
   def finish_time_can_not_be_before_start_time
-    errors.add(:finish_time, 'can not be before start time') if finish_time <= start_time
+    errors.add(:finish_time, 'can not be before start time') if start_time.present? && finish_time.present? && finish_time <= start_time
+  end
+
+  def finish_time_can_not_be_equal_to_start_time
+    errors.add(:finish_time, 'can not be equal to start time') if start_time.present? && finish_time.present? && finish_time == start_time
   end
 
   def can_not_overlap_other_entries
