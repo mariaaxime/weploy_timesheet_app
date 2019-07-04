@@ -1,7 +1,7 @@
 class Timesheet < ApplicationRecord
   belongs_to :user
 
-  validates_presence_of :date, :start_time, :finish_time
+  validates_presence_of :user, :date, :start_time, :finish_time
   validate :can_not_overlap_other_entries
   validate :date_can_not_be_in_the_future
   validate :finish_time_can_not_be_before_start_time
@@ -62,8 +62,10 @@ class Timesheet < ApplicationRecord
   end
 
   def can_not_overlap_other_entries
-    if self.class.where("date = ? and (start_time, finish_time) OVERLAPS (TIME ?, TIME ?)", date, start_time, finish_time).present?
-      errors.add(:base, 'This entry is overlapping another one')
+    if start_time.present? && finish_time.present?
+      if self.class.where("user_id = ? and date = ? and (start_time, finish_time) OVERLAPS (TIME ?, TIME ?)", user_id, date, start_time, finish_time).present?
+        errors.add(:base, 'This entry is overlapping another one')
+      end
     end
   end
 end
