@@ -1,8 +1,8 @@
 class TimesheetsController < ApplicationController
   before_action :authenticate_user!
-  
+
   def index
-    @timesheets = Timesheet.all.page(params[:page])
+    @timesheets = Timesheet.user_id_is(current_user.id).page(params[:page])
   end
 
   def new
@@ -10,7 +10,7 @@ class TimesheetsController < ApplicationController
   end
 
   def create
-    @timesheet = Timesheet.new(timesheet_params)
+    @timesheet = Timesheet.new(timesheet_params.merge(user_id: current_user.id))
 
     if @timesheet.save
       flash[:success] = 'Timesheet entry created successfully'
