@@ -4,25 +4,22 @@ class Timesheet < ApplicationRecord
   validate :date_can_not_be_in_the_future
   validate :finish_time_can_not_be_before_start_time
 
+  before_create :calculate_value
+
   scope :user_id_is, -> (id) { where(user_id: id) }
 
-  COST_PER_HOUR = {
-    [1, 3, 5] => [
-      [(0..6), 33],
-      [(7..18), 22],
-      [(19..23), 33]
-    ],
-    [2, 4] => [
-      [(0..4), 35],
-      [(6..16), 25],
-      [(17..23), 35]
-    ],
-    [6, 0] => [
-      [(0..23), 47]
-    ]
-  }
+  def friendly_format
+    "#{date}: #{start_time.strftime('%H:%M')} - #{finish_time.strftime('%H:%M')} $#{value}"
+  end
 
   private
+
+  def calculate_value
+    if [1, 3, 5].include?(date.wday)
+    elsif [2, 4].include?(date.wday)
+    elsif [6, 0].include?(date.wday)
+    end
+  end
 
   def date_can_not_be_in_the_future
     errors.add(:date, 'can not be in the future') if date > Date.today

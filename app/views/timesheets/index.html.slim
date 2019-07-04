@@ -7,4 +7,4 @@
   - else
     ul
       - @timesheets.each do |timesheet|
-        li #{timesheet.date}: #{timesheet.start_time} - #{timesheet.finish_time} #{number_to_currency(timesheet.value)}
+        li = timesheet.friendly_format
