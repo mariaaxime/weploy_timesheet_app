@@ -6,13 +6,12 @@ html
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"
 
   body
     div[style='margin: 1rem']
-      .columns.is-centered
-        .column.is-half
-          - flash.each do |name, message|
-            div[class="notification is-#{name == 'alert' ? 'danger' : name == 'notice' ? 'success' : name}"]
-              button.delete
-              = message
-          = yield
+      - flash.each do |name, message|
+        div[class="notification is-#{name == 'alert' ? 'danger' : name == 'notice' ? 'success' : name}"]
+          button.delete
+          = message
+      = yield
