@@ -1,4 +1,5 @@
 .container
+  = link_to 'Back', root_path, class: 'button is-pulled-right'
   h1.title Create timesheet entry
   .columns
     .column.is-half
@@ -7,11 +8,11 @@
         = form_for(@timesheet) do |f|
           .field
             = f.label :date
-            .control = f.date_select :date, end_year: Date.today.year, include_blank: true
+            .control = f.date_select :date, end_year: Date.today.year
           .field
             = f.label :start_time
-            .control = f.time_select :start_time, include_blank: true
+            .control = f.time_select :start_time
           .field
             = f.label :finish_time
-            .control = f.time_select :finish_time, include_blank: true
+            .control = f.time_select :finish_time
           .control = f.submit 'Create', class: 'button is-primary'
