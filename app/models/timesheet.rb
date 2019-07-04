@@ -13,10 +13,9 @@ class Timesheet < ApplicationRecord
     "#{date}: #{start_time.strftime('%H:%M')} - #{finish_time.strftime('%H:%M')} $#{value.round(2)}"
   end
 
-  VALUE_PER_HOUR = {
+  VALUE_PER_DAY = {
     [1, 3, 5] => [
-      [{start_hour: 7, start_minute: 0, finish_hour: 14, finish_minute: 0, value: 22},
-       {start_hour: 14, start_minute: 0, finish_hour: 19, finish_minute: 0, value: 22}],
+      [{start_hour: 7, start_minute: 0, finish_hour: 19, finish_minute: 0, value: 22}],
       33
      ],
     [2, 4] => [
@@ -32,7 +31,7 @@ class Timesheet < ApplicationRecord
   private
 
   def set_value
-    VALUE_PER_HOUR.each do |wday_array, (ranges, outside_value)|
+    VALUE_PER_DAY.each do |wday_array, (ranges, outside_value)|
       if wday_array.include?(date.wday)
         duration_in_ranges = 0
         total_value = 0
@@ -54,7 +53,7 @@ class Timesheet < ApplicationRecord
   end
 
   def finish_time_can_not_be_before_start_time
-    errors.add(:finish_time, 'can not be before start time') if start_time.present? && finish_time.present? && finish_time <= start_time
+    errors.add(:finish_time, 'can not be before start time') if start_time.present? && finish_time.present? && finish_time < start_time
   end
 
   def finish_time_can_not_be_equal_to_start_time
