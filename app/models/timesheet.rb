@@ -9,7 +9,7 @@ class Timesheet < ApplicationRecord
   scope :user_id_is, -> (id) { where(user_id: id) }
 
   def friendly_format
-    "#{date}: #{start_time.strftime('%H:%M')} - #{finish_time.strftime('%H:%M')} $#{value}"
+    "#{date}: #{start_time.strftime('%H:%M')} - #{finish_time.strftime('%H:%M')} $#{value.round(2)}"
   end
 
   private
