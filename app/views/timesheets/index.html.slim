@@ -1,7 +1,7 @@
-.container
-  = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'button is-danger is-pulled-right'
-  = link_to 'Create timesheet entry', new_timesheet_path, class: 'button is-primary is-pulled-right'
-  h1.title Timesheet entries
+= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'button is-danger is-pulled-right'
+= link_to 'Create timesheet entry', new_timesheet_path, class: 'button is-primary is-pulled-right'
+h1.title Timesheet entries
+.card.card-content
   - if @timesheets.blank?
     p There's no timesheets. Create the first one!
   - else

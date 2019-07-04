@@ -9,8 +9,10 @@ html
 
   body
     div[style='margin: 1rem']
-      - flash.each do |name, message|
-        div[class="notification is-#{name == 'alert' ? 'danger' : name == 'notice' ? 'success' : name}"]
-          button.delete
-          = message
-      = yield
+      .columns.is-centered
+        .column.is-half
+          - flash.each do |name, message|
+            div[class="notification is-#{name == 'alert' ? 'danger' : name == 'notice' ? 'success' : name}"]
+              button.delete
+              = message
+          = yield

@@ -1,21 +1,20 @@
-h2.title Sign up
-.columns
-  .column.is-half
-    = render "devise/shared/error_messages", resource: resource
-    .card.card-content
-      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        .field
-          = f.label :email
-          .control = f.email_field :email, autofocus: true, autocomplete: "email", class: 'input'
-        .field
-          = f.label :password
-          - if @minimum_password_length
-            em
-              | &nbsp;(#{@minimum_password_length} characters minimum)
-          .control = f.password_field :password, autocomplete: "new-password", class: 'input'
-        .field
-          = f.label :password_confirmation
-          .control = f.password_field :password_confirmation, autocomplete: "new-password", class: 'input'
-        .actions
-          = f.submit "Sign up", class: 'button is-primary'
+h1.title Timesheets App
+h2.subtitle Sign up
+= render "devise/shared/error_messages", resource: resource
+.card.card-content
+  = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+    .field
+      = f.label :email
+      .control = f.email_field :email, autofocus: true, autocomplete: "email", class: 'input'
+    .field
+      = f.label :password
+      - if @minimum_password_length
+        em
+          | &nbsp;(#{@minimum_password_length} characters minimum)
+      .control = f.password_field :password, autocomplete: "new-password", class: 'input'
+    .field
+      = f.label :password_confirmation
+      .control = f.password_field :password_confirmation, autocomplete: "new-password", class: 'input'
+    .actions
+      = f.submit "Sign up", class: 'button is-primary'
 = render "devise/shared/links"
