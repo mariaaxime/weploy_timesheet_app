@@ -5,6 +5,8 @@ h1.title Timesheet entries
   - if @timesheets.blank?
     p There's no timesheets. Create the first one!
   - else
+    = paginate @timesheets
     ul
       - @timesheets.each do |timesheet|
         li = timesheet.friendly_format
+    = paginate @timesheets
