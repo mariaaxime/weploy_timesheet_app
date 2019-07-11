@@ -68,3 +68,4 @@ gem "bulma-rails", "~> 0.7.5"
 gem "slim-rails"
 gem 'kaminari'
 gem 'devise'
+gem 'groupdate'

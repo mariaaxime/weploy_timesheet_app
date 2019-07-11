@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       root 'timesheets#index'
 
       resources :timesheets, only: [:new, :create]
+
+      resources :weekly_timesheets, only: [:index]
     end
   end
 

@@ -1,0 +1,19 @@
+h1.title Weekly Timesheets
+
+table.table
+    thead
+      tr
+        th Week
+        th Start date
+        th End date
+        th Timesheets
+    tbody
+      - @weekly_summary.each do |date, timesheets|
+        tr
+          td = date.strftime('%W') 
+          td = date
+          td = date.end_of_week
+          td
+            ul
+              - timesheets.each do |timesheet|
+                li = timesheet
