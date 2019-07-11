@@ -28,6 +28,13 @@ class Timesheet < ApplicationRecord
      ],
   }
 
+  LIMIT = 4
+
+  # 00am - 10am
+  # 0am - 5am (Outside the range) ($175)
+  # 5am - 10am (Outside) ($175)
+  # ($350)
+
   private
 
   def set_value
@@ -36,9 +43,10 @@ class Timesheet < ApplicationRecord
         duration_in_ranges = 0
         total_value = 0
         ranges.each do |range|
+          limit_finish_time = [finish_time, start_time + LIMIT.hours].min
           range_start_time = [start_time, start_time.change(hour: range[:start_hour], min: range[:start_minute])].max
-          range_finish_time = [finish_time, finish_time.change(hour: range[:finish_hour], min: range[:finish_minute])].min
-          duration_in_range = range_finish_time - range_start_time
+          range_finish_time = [limit_finish_time, finish_time.change(hour: range[:finish_hour], min: range[:finish_minute])].min
+          duration_in_range = range_finish_time < range_start_time ? 0 : range_finish_time - range_start_time
           total_value += duration_in_range / 3600.0 * range[:value]
           duration_in_ranges += duration_in_range
         end
