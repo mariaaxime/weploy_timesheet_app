@@ -29,6 +29,7 @@ class Timesheet < ApplicationRecord
   }
 
   LIMIT = 4
+  #
 
   # 00am - 10am
   # 0am - 5am (Outside the range) ($175)
